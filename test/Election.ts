@@ -93,9 +93,18 @@ describe("USElection", function () {
     expect(await usElection.electionEnded()).to.equal(true); // Ended
   });
 
-  it("Should revert if the election is already ended", async function () {
+  it("Should throw if the election is already ended", async function () {
     expect(usElection.endElection()).to.be.revertedWith(
       "The election has ended already"
     );
   });
+
+  it("Should throw when tryng to submit a state results after the election is ended", async function () {
+    const stateResults = ["Colorado", 1110, 988, 44];
+
+    expect(usElection.submitStateResult(stateResults)).to.be.revertedWith(
+      "The election has ended already"
+    );
+  });
+
 });
